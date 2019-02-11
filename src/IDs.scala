@@ -1,6 +1,7 @@
 object IDs {
-  import scala.io.Source
   import java.io.PrintWriter
+
+  import scala.io.Source
 
   def CheckForID(id: String): String = {
     val file = Source.fromFile("src\\USERS.txt")
@@ -21,7 +22,7 @@ object IDs {
   def PopulateIDs(): Unit = {
     for (ids <- 0 to 9999){
       new PrintWriter("src\\USERS.txt") { write(ids.toString()+",,,\n"); close }
-      //not working i need to use a different print method
+      //not working i need to use a different print metho
     }
 
 
