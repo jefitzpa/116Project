@@ -22,7 +22,7 @@ object IDs {
   def PopulateIDs(): Unit = {
     for (ids <- 0 to 9999){
       new PrintWriter("src\\USERS.txt") { write(ids.toString()+",,,\n"); close }
-      //not working i need to use a different print metho
+      //not working i need to use a different print method
     }
 
 
