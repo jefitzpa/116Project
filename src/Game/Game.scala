@@ -1,7 +1,5 @@
 package Game
 
-import Game.Player
-
 import scala.collection.mutable.ListBuffer
 import scala.util.control.Breaks
 
@@ -34,7 +32,7 @@ class Game {
       //need to finalize size of map
       for (location <- playerLocations){
         if (location == spawn){
-          spawn = List(250 + (r.nextInt(1)*10 -5) , 250 + (r.nextInt(1)*10 - 5))
+          spawn = List(250 + (r.nextDouble()*10 - 5).toInt , 250 + (r.nextDouble()*10 - 5).toInt)
         }
       }
     }
