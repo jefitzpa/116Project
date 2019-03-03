@@ -13,12 +13,10 @@
 <script>
 
     var myGamePiece;
-    var myObstacles = [];
     var myScore;
 
     function startGame() {
         myGamePiece = new component(30, 30, "red", 10, 120);
-        myGamePiece.gravity = 0.05;
         myScore = new component("30px", "Consolas", "black", 280, 40, "text");
         myGameArea.start();
     }
@@ -26,12 +24,12 @@
     var myGameArea = {
         canvas : document.createElement("canvas"),
         start : function() {
-            this.canvas.width = 480;
-            this.canvas.height = 270;
+            this.canvas.width = 500;
+            this.canvas.height = 500;
             this.context = this.canvas.getContext("2d");
             document.body.insertBefore(this.canvas, document.body.childNodes[0]);
             this.frameNo = 0;
-            this.interval = setInterval(updateGameArea, 20);
+            this.interval = setInterval(updateGameArea, .6);
         },
         clear : function() {
             this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
@@ -59,11 +57,30 @@
                 ctx.fillStyle = color;
                 ctx.fillRect(this.x, this.y, this.width, this.height);
             }
-        }}
+        }
+        this.newPos = function() {
+            this.gravitySpeed += this.gravity;
+            this.x += this.speedX;
+            this.y += this.speedY + this.gravitySpeed;
+        }
+    }
+
+    function updateGameArea() {
+
+        myGameArea.clear();
+        myGameArea.frameNo += 1;
+
+        myScore.text="Coins: " + "0";
+        myScore.update();
+        myGamePiece.newPos();
+        myGamePiece.update();
+    }
+
+    function everyinterval(n) {
+        if ((myGameArea.frameNo / n) % 1 == 0) {return true;}
+        return false;
+    }
 </script>
 <br>
-<button onmousedown="accelerate(-0.2)" onmouseup="accelerate(0.05)">ACCELERATE</button>
-<p>Use the ACCELERATE button to stay in the air</p>
-<p>How long can you stay alive?</p>
 </body>
 </html>
