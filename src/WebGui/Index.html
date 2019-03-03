@@ -36,7 +36,7 @@
         clear : function() {
             this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
         }
-    }
+    };
 
     function component(width, height, color, x, y, type) {
         this.type = type;
@@ -59,7 +59,7 @@
                 ctx.fillStyle = color;
                 ctx.fillRect(this.x, this.y, this.width, this.height);
             }
-        }
+        }}
 </script>
 <br>
 <button onmousedown="accelerate(-0.2)" onmouseup="accelerate(0.05)">ACCELERATE</button>
