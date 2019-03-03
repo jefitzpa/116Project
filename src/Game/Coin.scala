@@ -3,4 +3,5 @@ package Game
 class Coin {
 
 
+
 }
