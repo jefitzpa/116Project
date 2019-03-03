@@ -1,6 +1,6 @@
 package Game
 
-import UserFiles.Player
+import Game.Player
 
 import scala.collection.mutable.ListBuffer
 import scala.util.control.Breaks
