@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/html">
+<html>
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <title>116 Project</title>
-    <link rel="icon" type="image/png" href="/Art/icon.png">
+    <link rel="icon" href="/Art/icon.png">
     <style>
         canvas {
             border:1px solid #000000;
@@ -76,11 +76,6 @@
         myScore.update();
         myGamePiece.newPos();
         myGamePiece.update();
-    }
-
-    function everyinterval(n) {
-        if ((myGameArea.frameNo / n) % 1 == 0) {return true;}
-        return false;
     }
 </script>
 <br>
