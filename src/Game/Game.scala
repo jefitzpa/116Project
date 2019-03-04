@@ -6,6 +6,7 @@ import scala.util.control.Breaks
 class Game {
 
   var usersOnline = new ListBuffer[Player]()
+  var coins = new ListBuffer[Coin]
 
   def AddUser(username: String): Unit = {
     val location = findSuitableSpawn()
@@ -59,5 +60,18 @@ class Game {
       }
     }
   }
+
+  def PopulateMap(): Unit = {
+    var x: Int = 0
+    var y : Int = 0
+
+    //code to randomize coin locations
+
+    var location: List[Int] = List(x,y)
+    for (coin <- 0 to 2500){
+      coins += new coin(location)
+    }
+  }
+
 
 }

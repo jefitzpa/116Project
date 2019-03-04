@@ -1,6 +1,6 @@
 package Game
 
-class Coin {
+class Coin(val location: List[Int]) {
 
 
 
