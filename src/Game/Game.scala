@@ -69,7 +69,7 @@ class Game {
 
     var location: List[Int] = List(x,y)
     for (coin <- 0 to 2500){
-      coins += new coin(location)
+      coins += new Coin(location)
     }
   }
 
