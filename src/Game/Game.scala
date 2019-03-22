@@ -1,7 +1,6 @@
 package Game
 
 import scala.collection.mutable.ListBuffer
-import scala.util.control.Breaks
 
 class Game {
 
@@ -19,7 +18,6 @@ class Game {
 
     val user = new Player(userName, location, id, 0)
     this.usersOnline += user
-    //needs to add player to screen still
   }
 
   def findSuitableSpawn(): List[Int] = {
@@ -41,7 +39,6 @@ class Game {
   }
 
   def FindID(): Int = {
-    val loop = new Breaks
     var id: Int = 0
     var ids: ListBuffer[Int] = ListBuffer()
     if (this.usersOnline.nonEmpty) {
@@ -67,7 +64,7 @@ class Game {
 
     //code to randomize coin locations
 
-    var location: List[Int] = List(x,y)
+    val location: List[Int] = List(x,y)
     for (coin <- 0 to 2500){
       coins += new Coin(location)
     }
