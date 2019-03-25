@@ -116,7 +116,6 @@ object Gui extends JFXApp {
     val update: Long => Unit = (time: Long) => {
      if (Math.pow(player.centerX.value - coin.centerX.value,2) + Math.pow(player.centerY.value - coin.centerY.value, 2) < 361){
        coins += 1
-       println("got it")
        graphics.children.removeAll(coin)
        placeNewCoin()
      }
