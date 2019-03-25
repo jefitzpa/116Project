@@ -95,8 +95,9 @@ object Gui extends JFXApp {
   }
 
   def placeNewCoin(): Unit ={
-    coin.setCenterX(210)
-    coin.setCenterY(300)
+    val r = scala.util.Random
+    coin.setCenterX(r.nextInt(750))
+    coin.setCenterY(r.nextInt(50))
     graphics.children.addAll(coin)
   }
 
