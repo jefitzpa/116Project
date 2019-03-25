@@ -10,7 +10,7 @@ import scalafx.application.JFXApp.PrimaryStage
 import scalafx.scene.control.TextField
 import scalafx.scene.layout.StackPane
 import scalafx.scene.paint.Color
-import scalafx.scene.shape.{Circle, Rectangle}
+import scalafx.scene.shape.Circle
 import scalafx.scene.{Group, Scene}
 
 object Gui extends JFXApp {
@@ -34,9 +34,10 @@ object Gui extends JFXApp {
   }
 
   //initializes player graphic
-  val player: Rectangle = new Rectangle {
-    width = 18
-    height = 18
+  val player: Circle = new Circle {
+    radius = 10
+    centerX= 400
+    centerY = 300
     fill = Skin
   }
 
@@ -46,8 +47,8 @@ object Gui extends JFXApp {
 
   //group player name and player
   val PlayerStack = new StackPane {
-    translateX = 400
-    translateY = 300
+    translateX = player.centerX.value
+    translateY = player.centerY.value
   }
   PlayerStack.getChildren.addAll(player, playerName)
 
@@ -97,7 +98,7 @@ object Gui extends JFXApp {
   def placeNewCoin(): Unit ={
     val r = scala.util.Random
     coin.setCenterX(r.nextInt(750))
-    coin.setCenterY(r.nextInt(50))
+    coin.setCenterY(r.nextInt(550))
     graphics.children.addAll(coin)
   }
 
@@ -113,13 +114,15 @@ object Gui extends JFXApp {
 
 
     val update: Long => Unit = (time: Long) => {
-     if (coin.centerX.value == PlayerStack.translateX.value & coin.centerY.value == PlayerStack.translateY.value){
+     if (Math.pow(player.centerX.value - coin.centerX.value,2) + Math.pow(player.centerY.value - coin.centerY.value, 2) < 361){
        coins += 1
-       println(coin.centerX.value, PlayerStack.translateX.value)
+       println("got it")
        graphics.children.removeAll(coin)
        placeNewCoin()
      }
-     amountOfCoins.setText("Coins: " + coins.toString)
+      player.setCenterX(PlayerStack.translateX.value + 10)
+      player.setCenterY(PlayerStack.translateY.value + 10)
+      amountOfCoins.setText("Coins: " + coins.toString)
     }
     AnimationTimer(update).start()
   }
