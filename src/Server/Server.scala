@@ -1,6 +1,6 @@
 package Server
 
-import javax.ws.rs.{GET, Path, Produces}
+import javax.ws.rs.{GET, Produces, Path}
 
 @Path("/helloworld")
 class Server {
