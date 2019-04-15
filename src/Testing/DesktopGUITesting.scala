@@ -19,7 +19,7 @@ class DesktopGUITesting extends FunSuite{
   test("Start Button") {
 
     //with no input
-    var StartAction = new StartButton
+    val StartAction = new StartButton
 
     assert(StartAction.plyname == "default")
 
@@ -27,6 +27,5 @@ class DesktopGUITesting extends FunSuite{
     StartAction.plyname = "dadBod"
 
     assert(StartAction.plyname == "dadBod")
-
   }
 }

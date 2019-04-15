@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html xmlns="http://www.w3.org/1999/html" xmlns="http://www.w3.org/1999/html">
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <title>116 Project</title>
@@ -11,14 +11,25 @@
         }
     </style>
 </head>
-<body onload="startGame()">
+<body>
+<form id="GameStartForm">
+    Username: <input type="text" name="Username"><br>
+    Start: <input type="button" onclick="loadGame()" value="Submit">
+</form>
 <script>
-    var myGamePiece;
-    var myScore;
+    var Clientplayer;
+    var ClientplayerName;
+    var Clientscore;
 
-    function startGame() {
-        myGamePiece = new component(18, 18, "red", 225, 225, "rect");
-        myScore = new component("30px", "Consolas", "black", 340, 40, "text");
+    function loadGame() {
+        //Clear input fields
+        var start = document.getElementById("GameStartForm");
+        start.style.display = "none";
+
+        //Add Game pieces when start button is pressed
+        Clientplayer = new component(18, 18, "red", 225, 225, "rect");
+        ClientplayerName = new component("20px", "Consolas", "black", 225, 230, "text");
+        Clientscore = new component("30px", "Consolas", "black", 340, 40, "text");
         myGameArea.start();
     }
 
@@ -29,15 +40,14 @@
             this.canvas.height = 500;
             this.context = this.canvas.getContext("2d");
             document.body.insertBefore(this.canvas, document.body.childNodes[0]);
-            this.frameNo = 0;
             this.interval = setInterval(updateGameArea, .6);
             window.addEventListener('keydown', function (e) {
                 e.preventDefault();
                 myGameArea.keys = (myGameArea.keys || []);
-                myGameArea.keys[e.keyCode] = (e.type == "keydown");
+                myGameArea.keys[e.keyCode] = (e.type === "keydown");
             });
             window.addEventListener('keyup', function (e) {
-                myGameArea.keys[e.keyCode] = (e.type == "keydown");
+                myGameArea.keys[e.keyCode] = (e.type === "keydown");
             })
         },
         stop : function() {
@@ -58,11 +68,13 @@
         this.x = x;
         this.y = y;
         this.update = function() {
-            if (this.type == "text") {
+            if (this.type === "text") {
                 ctx.font = this.width + " " + this.height;
                 ctx.fillStyle = color;
                 ctx.fillText(this.text, this.x, this.y);
                 ctx.restore();
+            }else if (this.type === "input"){
+
             } else {
                 ctx = myGameArea.context;
                 ctx.save();
@@ -82,16 +94,19 @@
 
     function updateGameArea() {
         myGameArea.clear();
-        myGamePiece.moveAngle = 0;
-        myGamePiece.speed = 0;
-        myScore.text="Coins: " + "0";
-        if (myGameArea.keys && myGameArea.keys[37]) {myGamePiece.moveAngle = -1; }
-        if (myGameArea.keys && myGameArea.keys[39]) {myGamePiece.moveAngle = 1; }
-        if (myGameArea.keys && myGameArea.keys[38]) {myGamePiece.speed= 1; }
-        if (myGameArea.keys && myGameArea.keys[40]) {myGamePiece.speed= -1; }
-        myGamePiece.newPos();
-        myGamePiece.update();
-        myScore.update();
+        Clientplayer.moveAngle = 0;
+        Clientplayer.speed = 0;
+        Clientscore.text="Coins: " + "0";
+        ClientplayerName.text = document.forms['GameStartForm']["Username"].value;
+        ClientplayerName.textAlign = 'center';
+        if (myGameArea.keys && myGameArea.keys[37]) {Clientplayer.moveAngle = -1; }
+        if (myGameArea.keys && myGameArea.keys[39]) {Clientplayer.moveAngle = 1; }
+        if (myGameArea.keys && myGameArea.keys[38]) {Clientplayer.speed= 1; }
+        if (myGameArea.keys && myGameArea.keys[40]) {Clientplayer.speed= -1; }
+        Clientplayer.newPos();
+        Clientplayer.update();
+        Clientscore.update();
+        ClientplayerName.update();
     }
 </script>
 <br>
