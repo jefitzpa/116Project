@@ -28,4 +28,16 @@ class DesktopGUITesting extends FunSuite{
 
     assert(StartAction.plyname == "dadBod")
   }
+
+  test("StartButton (With No Name inputted)"){
+    val StartAction = new StartButton
+
+    assert(StartAction.plyname == "default")
+  }
+
+  test("No color selected (Reverts to default of red)"){
+    val RedButton = new SkinActionRed
+
+    assert(RedButton.skin == Color.Red)
+  }
 }

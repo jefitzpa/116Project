@@ -28,7 +28,7 @@
 
         //Add Game pieces when start button is pressed
         Clientplayer = new component(18, 18, "red", 225, 225, "rect");
-        ClientplayerName = new component("20px", "Consolas", "black", 225, 230, "text");
+        ClientplayerName = new component("20px", "Consolas", "black", 210, 210, "text");
         Clientscore = new component("30px", "Consolas", "black", 340, 40, "text");
         myGameArea.start();
     }
@@ -73,8 +73,6 @@
                 ctx.fillStyle = color;
                 ctx.fillText(this.text, this.x, this.y);
                 ctx.restore();
-            }else if (this.type === "input"){
-
             } else {
                 ctx = myGameArea.context;
                 ctx.save();
@@ -96,17 +94,29 @@
         myGameArea.clear();
         Clientplayer.moveAngle = 0;
         Clientplayer.speed = 0;
+        ClientplayerName.moveAngle = 0;
+        ClientplayerName.speed = 0;
+
         Clientscore.text="Coins: " + "0";
         ClientplayerName.text = document.forms['GameStartForm']["Username"].value;
         ClientplayerName.textAlign = 'center';
+
+        if (myGameArea.keys && myGameArea.keys[37]) {ClientplayerName.moveAngle = -1; }
+        if (myGameArea.keys && myGameArea.keys[39]) {ClientplayerName.moveAngle = 1; }
+        if (myGameArea.keys && myGameArea.keys[38]) {ClientplayerName.speed= 1; }
+        if (myGameArea.keys && myGameArea.keys[40]) {ClientplayerName.speed= -1; }
+
         if (myGameArea.keys && myGameArea.keys[37]) {Clientplayer.moveAngle = -1; }
         if (myGameArea.keys && myGameArea.keys[39]) {Clientplayer.moveAngle = 1; }
         if (myGameArea.keys && myGameArea.keys[38]) {Clientplayer.speed= 1; }
         if (myGameArea.keys && myGameArea.keys[40]) {Clientplayer.speed= -1; }
+
         Clientplayer.newPos();
+        ClientplayerName.newPos();
         Clientplayer.update();
-        Clientscore.update();
         ClientplayerName.update();
+        Clientscore.update();
+
     }
 </script>
 <br>
