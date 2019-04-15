@@ -26,11 +26,18 @@ object Gui extends JFXApp {
 
   var graphics : Group = new Group {}
 
+  var playerXvelo = 0.0
+  var playerYvelo = 0.0
+
+  //Create player label
+  val playerName = new Text
+  playerName.setTranslateY(-20)
+
   //needs to make request to server
   def AddUser(name: String): Unit = {
+    player.fill = Skin
     playerName.setText(name)
     graphics.children.addAll(PlayerStack)
-    graphics.children.removeAll(StartStack)
   }
 
   //initializes player graphic
@@ -40,10 +47,6 @@ object Gui extends JFXApp {
     centerY = 300
     fill = Skin
   }
-
-  //Create player label
-  val playerName = new Text
-  playerName.setTranslateY(-20)
 
   //group player name and player
   val PlayerStack = new StackPane {
@@ -65,6 +68,29 @@ object Gui extends JFXApp {
     setOnAction(new StartButton)
     setPrefSize(500, 100)
   }
+  var SkinRed = new Button {
+    setText("Red")
+    setOnAction(new SkinActionRed)
+    setPrefSize(100, 100)
+    setTranslateY(120)
+  }
+
+  var SkinBlue = new Button {
+    setText("Blue")
+    setOnAction(new SkinActionBlue)
+    setPrefSize(100, 100)
+    setTranslateX(-200)
+    setTranslateY(120)
+  }
+
+  var SkinGreen = new Button {
+    setText("Green")
+    setOnAction(new SkinActionGreen)
+    setPrefSize(100, 100)
+    setTranslateX(200)
+    setTranslateY(120)
+  }
+
   val inputName = new TextField
   inputName.setTranslateY(-80)
 
@@ -80,18 +106,18 @@ object Gui extends JFXApp {
     setTranslateY(25)
     setStyle("-fx-font: 30 ariel;")
   }
-  StartStack.getChildren.addAll(start, inputName)
+  StartStack.getChildren.addAll(start, inputName, SkinRed, SkinBlue, SkinGreen)
 
   graphics.children.addAll(amountOfCoins, coin, StartStack)
 
   def MakeKeyRequest(keyCode: KeyCode): Unit = {
     keyCode.getName match {
-      case "W" => PlayerStack.translateY.value -= 10
-      case "A" => PlayerStack.translateX.value -= 10
-      case "S" => PlayerStack.translateY.value += 10
-      case "D" => PlayerStack.translateX.value += 10
+      case "W" => playerYvelo = -10
+      case "A" => playerXvelo = -10
+      case "S" => playerYvelo = 10
+      case "D" => playerXvelo = 10
       case "Enter" => new StartButton
-      case _ => println(keyCode.getName + " pressed with no action")
+      case _ => println("Not an error")
     }
   }
 
@@ -99,7 +125,8 @@ object Gui extends JFXApp {
     val r = scala.util.Random
     coin.setCenterX(r.nextInt(750))
     coin.setCenterY(r.nextInt(550))
-    graphics.children.addAll(coin)
+    graphics.children.removeAll(PlayerStack,amountOfCoins)
+    graphics.children.addAll(coin, PlayerStack, amountOfCoins)
   }
 
   this.stage = new PrimaryStage {
@@ -114,6 +141,12 @@ object Gui extends JFXApp {
 
 
     val update: Long => Unit = (time: Long) => {
+      PlayerStack.translateX.value += playerXvelo
+      PlayerStack.translateY.value += playerYvelo
+
+      playerYvelo = 0.0
+      playerXvelo = 0.0
+
      if (Math.pow(player.centerX.value - coin.centerX.value,2) + Math.pow(player.centerY.value - coin.centerY.value, 2) < 361){
        coins += 1
        graphics.children.removeAll(coin)
