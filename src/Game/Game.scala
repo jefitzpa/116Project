@@ -1,11 +1,16 @@
 package Game
 
-import scala.collection.mutable.ListBuffer
+import Networking._
 
 class Game {
 
-  var usersOnline = new ListBuffer[Player]()
-  var coins = new ListBuffer[Coin]
+  def CoinFound(plyId: Int, CoinId: Int): Unit = {
+
+  }
+
+
+  //var usersOnline = new ListBuffer[Player]()
+  //var coins = new ListBuffer[Coin]
 
   def AddUser(username: String): Unit = {
     val location = findSuitableSpawn()
@@ -17,7 +22,7 @@ class Game {
     }
 
     val user = new Player(userName, location, id, 0)
-    this.usersOnline += user
+    Database.AddPlayer(user)
   }
 
   def findSuitableSpawn(): List[Int] = {
