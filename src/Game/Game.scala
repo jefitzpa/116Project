@@ -13,7 +13,7 @@ class Game {
   //var coins = new ListBuffer[Coin]
 
   def AddUser(username: String): Unit = {
-    val location = findSuitableSpawn()
+    val location = List(400,300)
     val id = FindID()
     var userName = username
 
@@ -25,53 +25,29 @@ class Game {
     Database.AddPlayer(user)
   }
 
-  def findSuitableSpawn(): List[Int] = {
-    val r = scala.util.Random
-    var spawn: List[Int] = List(250,250) //should be changed to the center of map
-    var playerLocations: ListBuffer[List[Int]] = ListBuffer()
-    if (this.usersOnline.nonEmpty){
-      for (user <- this.usersOnline){
-        playerLocations += user.location
-      }
-      //need to finalize size of map
-      for (location <- playerLocations){
-        if (location == spawn){
-          spawn = List(250 + (r.nextDouble()*10 - 5).toInt , 250 + (r.nextDouble()*10 - 5).toInt)
-        }
-      }
-    }
-    spawn
-  }
-
   def FindID(): Int = {
-    var id: Int = 0
-    var ids: ListBuffer[Int] = ListBuffer()
-    if (this.usersOnline.nonEmpty) {
-      for (user <- this.usersOnline) {
-        ids += user.userId
-      }
-      id = ids.toList.last + 1
+    val r = scala.util.Random
+    var id: Int = r.nextInt()
+
+    while (Database.FindID(id)){
+      id = r.nextInt()
     }
+
     id
   }
 
   def RemovePlayer(id: Int): Unit = {
-    for (user <- this.usersOnline){
-      if (id == user.userId){
-        this.usersOnline -= user
-      }
-    }
+    Database.RemovePlayer(id)
   }
 
   def PopulateMap(): Unit = {
-    var x: Int = 0
-    var y : Int = 0
+    val r = scala.util.Random
 
     //code to randomize coin locations
 
-    val location: List[Int] = List(x,y)
-    for (coin <- 0 to 2500){
-      coins += new Coin(location)
+    val location: List[Int] = List(r.nextInt(750), r.nextInt(550))
+    for (coin <- 0 to 100){
+      Database.AddCoin(new Coin(location, coin))
     }
   }
 

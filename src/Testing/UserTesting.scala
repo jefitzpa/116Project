@@ -15,14 +15,9 @@ class UserTesting extends FunSuite{
     game.AddUser("")
 
     //testing ids
-    assert(game.usersOnline(0).userId == 0)
-    assert(game.usersOnline(1).userId == 1)
-    assert(game.usersOnline(2).userId == 2)
+
 
     //testing names
-    assert(game.usersOnline(0).username == "Water")
-    assert(game.usersOnline(1).username == "1")
-    assert(game.usersOnline(2).username == "user2")
   }
 
   test("CheckIDs"){
@@ -36,9 +31,7 @@ class UserTesting extends FunSuite{
       game.AddUser("")
     }
     var ids: ListBuffer[Int] = ListBuffer()
-    for (user <- game.usersOnline){
-      ids += user.userId
-    }
+
     assert(ids.distinct.size == ids.size)
   }
 
@@ -49,10 +42,7 @@ class UserTesting extends FunSuite{
     for (num <- 0 to 100){
       game.AddUser("")
     }
-    for (user <- game.usersOnline){
-      assert(user.location(0) <= 260 && user.location(1) >= 240)
-      assert(user.location(1) <= 260 && user.location(1) >= 240)
-    }
+
   }
 
   test("removePlayer"){
@@ -63,7 +53,6 @@ class UserTesting extends FunSuite{
 
     game.RemovePlayer(0)
 
-    assert(game.usersOnline(0).username == "ihop")
   }
 
 }

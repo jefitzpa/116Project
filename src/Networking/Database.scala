@@ -65,4 +65,13 @@ object Database {
     RemovePlayer(player.userId)
     AddPlayer(player)
   }
+
+  def FindID(id: Int): Boolean = {
+    val statement = connection.prepareStatement("SELECT * FROM players WHERE id=?")
+
+    statement.setInt(2, id)
+    val result = statement.executeQuery()
+
+    result.next()
+  }
 }
