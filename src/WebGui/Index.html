@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/html" xmlns="http://www.w3.org/1999/html">
 <head>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <title>116 Project</title>
     <link rel="icon" href="/Art/icon.png">
     <style>
@@ -14,7 +13,7 @@
 <body>
 <form id="GameStartForm">
     Username: <input type="text" name="Username"><br>
-    Start: <input type="button" value="Submit">
+    Start: <input type="button" onclick="loadGame()" value="Submit">
 </form>
 <script>
     var socket = io.connect({transports: ['websocket']});
@@ -61,11 +60,47 @@
         var name = player['username'];
         var location = player['location'];
 
-        PlayerComponents += [[new component(18,18, "red", location(0), location(1), "rect"),
-            new component("20px", "Consolas", "black", location(0) + 130, location(1) - 170, "text")]];
+        PlayerComponents += [[new Component(18,18, "red", location(0), location(1), "rect", ""),
+            new Component("20px", "Consolas", "black", location(0) + 130, location(1) - 170, "text", name)]];
     }
 
+    function Component(width, height, color, x, y, type, text) {
+        this.type = type;
+        this.width = width;
+        this.height = height;
+        this.speed = 0;
+        this.angle = 0;
+        this.moveAngle = 0;
+        this.x = x;
+        this.y = y;
+        this.text = text;
+        this.update = function() {
+            if (this.type === "text") {
+                ctx.font = this.width + " " + this.height;
+                ctx.fillStyle = color;
+                ctx.fillText(this.text, this.x, this.y);
+                ctx.restore();
+            } else {
+                ctx = myGameArea.context;
+                ctx.save();
+                ctx.translate(this.x, this.y);
+                ctx.rotate(this.angle);
+                ctx.fillStyle = color;
+                ctx.fillRect(this.width / -2, this.height / -2, this.width, this.height);
+                ctx.restore();
+            }
+        };
+        this.newPos = function() {
+            var newPositions = JSON.parse(socket.emit('UpdatePlayers'))
 
+            for (var player of newPositions.keys()){
+                playersOnline[player] = newPositions[player]
+            }
+        }
+
+    }
+
+    //end of new code
 
     var Clientplayer;
     var ClientplayerName;

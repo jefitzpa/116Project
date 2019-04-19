@@ -31,14 +31,23 @@ def RegisterPlayer():
     SendToScala(message)
 
 
-def SendToScala(message):
+@socket_server.on('UpdatePlayers')
+def SendPlayers():
+    return 0 ##return the map of players with new locations from database
 
+
+@socket_server.on('PlayerMovement')
+def UpdateLocation(Id):
+    return 0 ##go into database and update the players location
+
+def SendToScala(message):
+    return 1
 
 def getFromScala(request):
     return 0
 
 
-socket_server.run(app, port=8080)
+socket_server.run(app, port=8090)
 
 
 
