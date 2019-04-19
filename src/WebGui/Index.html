@@ -14,19 +14,43 @@
 <body>
 <form id="GameStartForm">
     Username: <input type="text" name="Username"><br>
-    Start: <input type="button" onclick="loadGame()" value="Submit">
+    Start: <input type="button" value="Submit">
 </form>
 <script>
+    var socket = io.connect({transports: ['websocket']});
+
+    var playersOnline = {};
+
+    ConnectSocket();
+
+    function ConnectSocket() {
+        socket.on('connect', function (event) {
+            socket.send('Connected to Server')
+        });
+        socket.on('newPlayerConnected', function (event) {
+            var player = json.parse(event);
+            playersOnline[player['id']] = {'username': player['username'], 'coin': player['coins'],
+                'location': player['location']}
+        });
+        socket.on('UpdatePlayerMovement', function (event) {
+            //create a new method to deal with changing the location of each player
+        });
+        //add more messages to deal with greater functionality
+    }
+
+
+
+
+
     var Clientplayer;
     var ClientplayerName;
     var Clientscore;
 
     function loadGame() {
-        //Clear input fields
         var start = document.getElementById("GameStartForm");
         start.style.display = "none";
 
-        //Add Game pieces when start button is pressed
+
         Clientplayer = new component(18, 18, "red", 225, 225, "rect");
         ClientplayerName = new component("20px", "Consolas", "black", 210, 210, "text");
         Clientscore = new component("30px", "Consolas", "black", 340, 40, "text");

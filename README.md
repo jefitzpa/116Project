@@ -5,8 +5,4 @@ This project is a MMO game that consists of players moving around the map and co
 leaderboard. Coins will be randomly placed throughout the map when old coins are collected, and there will only ever be a set number of
 coins on the map at one time.
 
-This projects consists of:
--A Website Gui
--A Desktop Gui
--A server to run the game
--etc
+This projects consists of: A Desktop and web page Gui, a python server, a scala websocket to communicate, and various testing suites.
