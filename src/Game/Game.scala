@@ -8,7 +8,6 @@ class Game {
 
   }
 
-
   //var usersOnline = new ListBuffer[Player]()
   //var coins = new ListBuffer[Coin]
 

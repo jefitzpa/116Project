@@ -15,7 +15,9 @@ case object Connect
 
 case class Disconnect(Id : Int)
 
-class PlayerActor(Username: String, game: Game) extends Actor{
+class PlayerActor(Username: String) extends Actor{
+
+  val game  = new Game
 
   override def receive: Receive = {
 
