@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/html" xmlns="http://www.w3.org/1999/html">
+<html>
 <head>
     <title>116 Project</title>
     <link rel="icon" href="/WebServer/WebGui/Art/icon.png">
@@ -13,7 +13,7 @@
 <body>
 <form id="GameStartForm">
     Username: <input type="text" name="Username"><br>
-    Start: <input type="button" onclick="loadGame()" value="Submit">
+    Start: <input type="button" onclick="initializeGame()" value="Submit">
 </form>
 <script>
     var socket = io.connect({transports: ['websocket']});

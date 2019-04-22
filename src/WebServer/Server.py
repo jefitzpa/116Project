@@ -49,7 +49,7 @@ def getFromScala(request):
     return 0
 
 
-socket_server.run(app, port=8090)
+socket_server.run(app, port=8080)
 
 
 

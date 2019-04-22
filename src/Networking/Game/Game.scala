@@ -28,7 +28,7 @@ class Game {
     val r = scala.util.Random
     var id: Int = r.nextInt()
 
-    while (Database.FindID(id)){
+    while (Database.FindID(id) || id == 0){
       id = r.nextInt()
     }
 

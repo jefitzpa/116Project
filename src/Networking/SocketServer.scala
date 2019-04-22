@@ -15,6 +15,7 @@ class SocketServer extends Actor {
 
   var server: ActorRef = _
   var clients: Map[String, ActorRef] = Map()
+  val game = new Game.Game
 
   override def receive: Receive = {
 
@@ -27,7 +28,11 @@ class SocketServer extends Actor {
       println("Message from Server Received")
       val parsed: JsValue = Json.parse(r.data.utf8String)
 
-      val Id = (parsed \ "Id").as[String]
+      var Id = (parsed \ "Id").as[String]
+      if (Id.toInt == 0){
+        Id = game.FindID().toString
+      }
+
       val action = (parsed \ "action").as[String]
 
       val ClientActor = context.actorOf(Props(classOf[PlayerActor], Id))
@@ -35,7 +40,7 @@ class SocketServer extends Actor {
       if (action == "connected"){
         this.clients = this.clients + (Id -> ClientActor)
         ClientActor ! Register(self)
-        println("User: " + Id + "Has Connected")
+        println("User: "+ Id + "Has Connected")
       }
       if (action == "disconnected"){
         this.clients = this.clients - Id
@@ -44,7 +49,7 @@ class SocketServer extends Actor {
 
 }
 
-object ClickerServer {
+object SocketServer {
 
   def main(args: Array[String]): Unit = {
     val actorSystem = ActorSystem()
