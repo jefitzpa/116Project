@@ -1,6 +1,6 @@
 package Gui
 
-import Game.Game
+import Networking.Game.Game
 import javafx.scene.control.Button
 import javafx.scene.input.{KeyCode, KeyEvent}
 import javafx.scene.text.Text

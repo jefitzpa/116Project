@@ -17,7 +17,7 @@ scala_socket.connect(('localhost', 8000))
 
 @app.route("/")
 def index():
-    return send_from_directory('WebGui', 'Index.html')
+    return send_from_directory('WebServer.WebGui', 'Index.html')
 
 
 @socket_server.on('register')

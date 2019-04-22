@@ -1,4 +1,4 @@
-package Game
+package Networking.Game
 
 import Networking._
 

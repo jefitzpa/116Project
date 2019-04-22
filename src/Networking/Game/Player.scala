@@ -1,4 +1,4 @@
-package Game
+package Networking.Game
 
 class Player(var username: String, var location: List[Int], var userId: Int, var Coins: Int) {
 

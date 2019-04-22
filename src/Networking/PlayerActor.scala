@@ -1,6 +1,6 @@
 package Networking
 
-import Game.Game
+import Networking.Game.Game
 import akka.actor.Actor
 
 case class UpdateOtherPlayers(UserToLocation: Map[String, List[Int]])
@@ -25,7 +25,7 @@ class PlayerActor(Username: String) extends Actor{
 
     case Connect => game.AddUser(Username) //rewrite AddUser to include a database call
 
-    case m: Move => //Need to figure out a way to reference each user, probably with database or within Game
+    case m: Move => //Need to figure out a way to reference each user, probably with database or within Networking.Game
 
     case cc: CoinCollected => game.CoinFound(cc.plyId, cc.CoinId) //need to write this function
 

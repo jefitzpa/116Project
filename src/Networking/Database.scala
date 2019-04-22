@@ -2,7 +2,7 @@ package Networking
 
 import java.sql.{Connection, DriverManager}
 
-import Game._
+import Networking.Game._
 
 object Database {
 

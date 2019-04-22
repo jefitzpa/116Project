@@ -1,6 +1,6 @@
 package Testing
 
-import Game.Game
+import Networking.Game.Game
 import org.scalatest._
 
 import scala.collection.mutable.ListBuffer
