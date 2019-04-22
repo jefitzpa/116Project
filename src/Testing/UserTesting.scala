@@ -3,8 +3,6 @@ package Testing
 import Networking.Game.Game
 import org.scalatest._
 
-import scala.collection.mutable.ListBuffer
-
 class UserTesting extends FunSuite{
 
   test("AddUser"){
@@ -30,9 +28,7 @@ class UserTesting extends FunSuite{
     for (num <- 0 to 100){
       game.AddUser("")
     }
-    var ids: ListBuffer[Int] = ListBuffer()
 
-    assert(ids.distinct.size == ids.size)
   }
 
   test("spawnLocation"){

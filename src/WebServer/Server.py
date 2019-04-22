@@ -1,4 +1,5 @@
 import eventlet
+import json
 import socket
 from flask import Flask, send_from_directory, request
 from flask_socketio import SocketIO
@@ -41,7 +42,8 @@ def UpdateLocation(Id):
     return 0 ##go into database and update the players location
 
 def SendToScala(message):
-    return 1
+    scala_socket.sendall(json.dumps(message).encode())
+
 
 def getFromScala(request):
     return 0

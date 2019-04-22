@@ -7,8 +7,8 @@ import Networking.Game._
 object Database {
 
   val url = "jdbc:mysql://localhost/mysql?serverTimezone=UTC"
-  val username = "116Project" //make this more secure
-  val password = "isfneSJBWu7ub1"
+  val username = "Admin" //make this more secure
+  val password = "1234`"
   var connection: Connection = DriverManager.getConnection(url, username, password)
 
 
@@ -19,12 +19,12 @@ object Database {
 
   def SetupCoinTable(): Unit = {
     val statement = connection.createStatement()
-    statement.execute("CREATE TABLE IF NOT EXISTS coins (id INT, XLocation INT, YLocation INT BIGINT)")
+    statement.execute("CREATE TABLE IF NOT EXISTS coins (id INT, XLocation INT, YLocation INT)")
   }
 
   def SetUpPlayerTable(): Unit = {
     val statement = connection.createStatement()
-    statement.execute("CREATE TABLE IF NOT EXISTS players (username TEXT, id INT, coins INT, XLocation INT, YLocation INT BIGINT)")
+    statement.execute("CREATE TABLE IF NOT EXISTS players (username TEXT, id INT, coins INT, XLocation INT, YLocation INT)")
   }
 
   def AddPlayer(user: Player): Unit = {
@@ -57,7 +57,7 @@ object Database {
 
   def RemovePlayer(playerID: Int): Unit = {
     val statement = connection.prepareStatement("DELETE FROM players WHERE id=?")
-    statement.setInt(2, playerID)
+    statement.setInt(1, playerID)
     statement.execute()
   }
 
@@ -69,9 +69,18 @@ object Database {
   def FindID(id: Int): Boolean = {
     val statement = connection.prepareStatement("SELECT * FROM players WHERE id=?")
 
-    statement.setInt(2, id)
+    statement.setInt(1, id)
     val result = statement.executeQuery()
 
-    result.next()
+    result.first()
+  }
+
+  def CoinFindID(id: Int): Boolean = {
+    val statement = connection.prepareStatement("SELECT * FROM coins WHERE id=?")
+
+    statement.setInt(1, id)
+    val result = statement.executeQuery()
+
+    result.first()
   }
 }
