@@ -45,6 +45,9 @@ class SocketServer extends Actor {
       if (action == "disconnected"){
         this.clients = this.clients - Id
       }
+      if (action == "createPlayer"){
+        this.server ! Id
+      }
   }
 
 }

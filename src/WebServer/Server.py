@@ -16,18 +16,19 @@ scala_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 scala_socket.connect(('localhost', 8000))
 
 
-@app.route("/")
+@app.route('/')
 def index():
-    return send_from_directory('WebServer.WebGui', 'Index.html')
+    return send_from_directory('WebGui', 'Index.html')
 
 
 @socket_server.on('register')
 def RegisterPlayer():
+    print("Player Connecting")
     Id = getFromScala({"UserId": 0, "action": "createPlayer"})
 
     userIDToSid[Id] = request.sid
     sidToUserID[request.sid] = Id
-    print(Id + " connected")
+    print(str(Id) + " connected")
     message = {"userID": Id, "action": "connected"}
     SendToScala(message)
 
@@ -40,6 +41,7 @@ def SendPlayers():
 @socket_server.on('PlayerMovement')
 def UpdateLocation(Id):
     return 0 ##go into database and update the players location
+
 
 def SendToScala(message):
     scala_socket.sendall(json.dumps(message).encode())

@@ -10,8 +10,9 @@
         }
     </style>
 </head>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.2.0/socket.io.js"></script>
 <body>
-<form id="GameStartForm">
+  id="GameStartForm">
     Username: <input type="text" name="Username"><br>
     Start: <input type="button" onclick="initializeGame()" value="Submit">
 </form>
@@ -29,8 +30,7 @@
 
     function ConnectSocket() {
         socket.on('connect', function (event) {
-            socket.send('Connected to Server')
-            initializeGame()
+            socket.send('Connected to Server');
         });
         socket.on('newPlayerConnected', function (event) {
             var player = json.parse(event);
@@ -43,6 +43,7 @@
     }
 
     function initializeGame(){
+        console.log("Registering");
         ClientID = socket.emit('register');
 
         //make sure to add the client to this list on server, so everyPlayer is added
