@@ -12,7 +12,7 @@
 </head>
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.2.0/socket.io.js"></script>
 <body>
-  id="GameStartForm">
+  <form id="GameStartForm">
     Username: <input type="text" name="Username"><br>
     Start: <input type="button" onclick="initializeGame()" value="Submit">
 </form>
@@ -44,12 +44,12 @@
 
     function initializeGame(){
         console.log("Registering");
-        ClientID = socket.emit('register');
+
+        var username = document.forms['GameStartForm']["Username"].value;
+        ClientID = socket.emit('register', username);
 
         //make sure to add the client to this list on server, so everyPlayer is added
         playersOnline = socket.emit('GetPlayers');
-
-        ClientName = ClientName.text = document.forms['GameStartForm']["Username"].value;
 
         for (var player of playersOnline.keys()){
             CreatePlayer(playersOnline[player]);

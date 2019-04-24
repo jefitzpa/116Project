@@ -4,6 +4,7 @@ import java.net.InetSocketAddress
 
 import akka.actor.{Actor, ActorRef, ActorSystem, Props}
 import akka.io.{IO, Tcp}
+import akka.util.ByteString
 import play.api.libs.json.{JsValue, Json}
 
 class SocketServer extends Actor {
@@ -20,18 +21,20 @@ class SocketServer extends Actor {
   override def receive: Receive = {
 
     case c: Connected =>
-      println("Connected to Server")
+      println("SocketServer: Connected to Server")
       this.server = sender()
       this.server ! Register(self)
 
     case r: Received =>
-      println("Message from Server Received")
       val parsed: JsValue = Json.parse(r.data.utf8String)
 
-      var Id = (parsed \ "Id").as[String]
+      println("SocketServer: Message from Server Received " + parsed)
+
+      var Id = (parsed \ "userID").as[Int].toString
       if (Id.toInt == 0){
-        Id = game.FindID().toString
-      }
+        val name = (parsed \ "username").as[String]
+        Id = game.AddUser(name).userId.toString
+  }
 
       val action = (parsed \ "action").as[String]
 
@@ -40,13 +43,14 @@ class SocketServer extends Actor {
       if (action == "connected"){
         this.clients = this.clients + (Id -> ClientActor)
         ClientActor ! Register(self)
-        println("User: "+ Id + "Has Connected")
+        println("SocketServer: User "+ Id + " Has Connected")
       }
       if (action == "disconnected"){
         this.clients = this.clients - Id
       }
       if (action == "createPlayer"){
-        this.server ! Id
+        val message = Id + "|/|"
+        server ! Write(ByteString(message))
       }
   }
 

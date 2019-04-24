@@ -11,7 +11,7 @@ class Game {
   //var usersOnline = new ListBuffer[Player]()
   //var coins = new ListBuffer[Coin]
 
-  def AddUser(username: String): Unit = {
+  def AddUser(username: String): Player = {
     val location = List(400,300)
     val id = FindID()
     var userName = username
@@ -22,13 +22,14 @@ class Game {
 
     val user = new Player(userName, location, id, 0)
     Database.AddPlayer(user)
+    user
   }
 
   def FindID(): Int = {
     val r = scala.util.Random
     var id: Int = r.nextInt()
 
-    while (Database.FindID(id) || id == 0){
+    while (Database.FindID(id) || id <= 0){
       id = r.nextInt()
     }
 
