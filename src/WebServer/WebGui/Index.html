@@ -46,7 +46,7 @@
         console.log("Registering");
 
         var username = document.forms['GameStartForm']["Username"].value;
-        ClientID = socket.emit('register', username);
+        ClientID = socket.emit('register', username, socket.id);
 
         //make sure to add the client to this list on server, so everyPlayer is added
         playersOnline = socket.emit('GetPlayers');

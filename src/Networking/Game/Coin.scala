@@ -1,4 +1,4 @@
 package Networking.Game
 
-class Coin(val location: List[Int], val id: Int) {
+class Coin(val location: List[Int], val id: String) {
 }

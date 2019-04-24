@@ -1,6 +1,6 @@
 package Networking.Game
 
-class Player(var username: String, var location: List[Int], var userId: Int, var Coins: Int) {
+class Player(var username: String, var location: List[Int], var userId: String, var Coins: Int) {
 
   def move(displacement: List[Int]): Unit = {
     val x: Int = this.location.head + displacement.head

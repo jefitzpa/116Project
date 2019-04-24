@@ -4,7 +4,6 @@ import java.net.InetSocketAddress
 
 import akka.actor.{Actor, ActorRef, ActorSystem, Props}
 import akka.io.{IO, Tcp}
-import akka.util.ByteString
 import play.api.libs.json.{JsValue, Json}
 
 class SocketServer extends Actor {
@@ -30,13 +29,11 @@ class SocketServer extends Actor {
 
       println("SocketServer: Message from Server Received " + parsed)
 
-      var Id = (parsed \ "userID").as[Int].toString
-      if (Id.toInt == 0){
-        val name = (parsed \ "username").as[String]
-        Id = game.AddUser(name).userId.toString
-  }
+      val Id = (parsed \ "userID").as[String]
 
       val action = (parsed \ "action").as[String]
+
+      val username = (parsed \ "username").as[String]
 
       val ClientActor = context.actorOf(Props(classOf[PlayerActor], Id))
 
@@ -44,13 +41,10 @@ class SocketServer extends Actor {
         this.clients = this.clients + (Id -> ClientActor)
         ClientActor ! Register(self)
         println("SocketServer: User "+ Id + " Has Connected")
+        game.AddUser(username, Id)
       }
       if (action == "disconnected"){
         this.clients = this.clients - Id
-      }
-      if (action == "createPlayer"){
-        val message = Id + "|/|"
-        server ! Write(ByteString(message))
       }
   }
 

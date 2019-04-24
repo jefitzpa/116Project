@@ -7,13 +7,13 @@ case class UpdateOtherPlayers(UserToLocation: Map[String, List[Int]])
 
 case class AddNewCoin(location: List[Int])
 
-case class CoinCollected(plyId: Int, CoinId: Int)
+case class CoinCollected(plyId: String, CoinId: Int)
 
 case class Move(Displacement: List[Int])
 
 case object Connect
 
-case class Disconnect(Id : Int)
+case class Disconnect(Id : String)
 
 class PlayerActor(Username: String) extends Actor{
 
@@ -23,7 +23,7 @@ class PlayerActor(Username: String) extends Actor{
 
     case d: Disconnect => game.RemovePlayer(d.Id)
 
-    case Connect => game.AddUser(Username) //rewrite AddUser to include a database call
+    case Connect => game.AddUser(Username, "0") //rewrite AddUser to include a database call
 
     case m: Move => //Need to figure out a way to reference each user, probably with database or within Networking.Game
 

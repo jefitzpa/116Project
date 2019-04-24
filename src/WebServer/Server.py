@@ -39,16 +39,14 @@ def index():
 
 
 @socket_server.on('register')
-def RegisterPlayer(username):
+def RegisterPlayer(username, id):
     print("Server: Player Connecting")
 
-    message = {"userID": 0, "action": "createPlayer", "username": username}
-    SendToScala(message)
+    userIDToSid[id] = request.sid
+    sidToUserID[request.sid] = id
+    print("Server: " + str(id) + " connected")
 
-    userIDToSid[currentPlyId] = request.sid
-    sidToUserID[request.sid] = currentPlyId
-    print("Server: " + str(currentPlyId) + " connected")
-    message = {"userID": currentPlyId, "action": "connected"}
+    message = {"userID": id, "action": "connected", "username": username}
     SendToScala(message)
 
 
@@ -68,7 +66,9 @@ def SendToScala(message):
 
 def getFromScala(message):
     message = json.loads(message)
-    global currentPlyId = message
+    global currentPlyId
+    currentPlyId = message
+    print(currentPlyId)
 
 
 socket_server.run(app, port=8080)

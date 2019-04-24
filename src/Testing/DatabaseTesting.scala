@@ -20,32 +20,32 @@ class DatabaseTesting extends FunSuite{
   test("Player Inserted Correctly"){
     Database.SetupDatabase()
 
-    val player = new Player("Jake", List(0,0), 12, 9)
+    val player = new Player("Jake", List(0,0), "12", 9)
 
     Database.AddPlayer(player)
 
-    assert((Database.FindID(12)) == true)
+    assert((Database.FindID("12")) == true)
   }
 
   test("Coin Inserted Correctly"){
     Database.SetupDatabase()
 
-    val coin = new Coin(List(0,0), 637)
+    val coin = new Coin(List(0,0), "637")
 
     Database.AddCoin(coin)
 
-    assert(Database.CoinFindID(637) == true)
+    assert(Database.CoinFindID("637") == true)
   }
 
   test("Coin Removed Successfully"){
     Database.SetupDatabase()
 
-    val coin = new Coin(List(0,0), 637)
+    val coin = new Coin(List(0,0), "637")
 
     Database.AddCoin(coin)
 
     Database.RemoveCoin(637)
 
-    assert(Database.CoinFindID(637) == false)
+    assert(Database.CoinFindID("637") == false)
   }
 }
