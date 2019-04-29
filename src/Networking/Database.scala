@@ -19,28 +19,28 @@ object Database {
 
   def SetupCoinTable(): Unit = {
     val statement = connection.createStatement()
-    statement.execute("CREATE TABLE IF NOT EXISTS coins (id TEXT, XLocation INT, YLocation INT)")
+    statement.execute("CREATE TABLE coins1 (id TEXT, XLocation INT, YLocation INT)")
   }
 
   def SetUpPlayerTable(): Unit = {
     val statement = connection.createStatement()
-    statement.execute("CREATE TABLE IF NOT EXISTS players (username TEXT, id Text, coins INT, XLocation INT, YLocation INT)")
+    statement.execute("CREATE TABLE players1 (username TEXT, id TEXT, coins INT, XLocation INT, YLocation INT)")
   }
 
   def AddPlayer(user: Player): Unit = {
-    val statement = connection.prepareStatement("INSERT INTO players VALUE (?, ?, ?, ?, ?)")
+    val statement = connection.prepareStatement("INSERT INTO players1 VALUES (?, ?, ?, ?, ?)")
 
     statement.setString(1, user.username)
-    statement.setString(2, user.userId)
     statement.setInt(3, user.Coins)
     statement.setInt(4, user.location.head)
     statement.setInt(5, user.location.tail.head)
+    statement.setString(2, user.userId)
 
     statement.execute()
   }
 
   def AddCoin(coin: Coin): Unit = {
-    val statement = connection.prepareStatement("INSERT INTO coins VALUE (?, ?, ?)")
+    val statement = connection.prepareStatement("INSERT INTO coins1 VALUE (?, ?, ?)")
 
     statement.setString(1, coin.id)
     statement.setInt(2, coin.location.head)
@@ -50,13 +50,13 @@ object Database {
   }
 
   def RemoveCoin(coinID: Int): Unit = {
-    val statement = connection.prepareStatement("DELETE FROM coins WHERE id=?")
+    val statement = connection.prepareStatement("DELETE FROM coins1 WHERE id=?")
     statement.setInt(1, coinID)
     statement.execute()
   }
 
   def RemovePlayer(playerID: String): Unit = {
-    val statement = connection.prepareStatement("DELETE FROM players WHERE id=?")
+    val statement = connection.prepareStatement("DELETE FROM players1 WHERE id=?")
     statement.setString(1, playerID)
     statement.execute()
   }
@@ -67,7 +67,7 @@ object Database {
   }
 
   def FindID(id: String): Boolean = {
-    val statement = connection.prepareStatement("SELECT * FROM players WHERE id=?")
+    val statement = connection.prepareStatement("SELECT * FROM players1 WHERE id=?")
 
     statement.setString(1, id)
     val result = statement.executeQuery()
@@ -76,7 +76,7 @@ object Database {
   }
 
   def CoinFindID(id: String): Boolean = {
-    val statement = connection.prepareStatement("SELECT * FROM coins WHERE id=?")
+    val statement = connection.prepareStatement("SELECT * FROM coins1 WHERE id=?")
 
     statement.setString(1, id)
     val result = statement.executeQuery()
