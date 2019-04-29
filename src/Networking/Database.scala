@@ -19,12 +19,12 @@ object Database {
 
   def SetupCoinTable(): Unit = {
     val statement = connection.createStatement()
-    statement.execute("CREATE TABLE coins1 (id TEXT, XLocation INT, YLocation INT)")
+    statement.execute("CREATE TABLE IF NOT EXISTS coins1 (id TEXT, XLocation INT, YLocation INT)")
   }
 
   def SetUpPlayerTable(): Unit = {
     val statement = connection.createStatement()
-    statement.execute("CREATE TABLE players1 (username TEXT, id TEXT, coins INT, XLocation INT, YLocation INT)")
+    statement.execute("CREATE TABLE IF NOT EXISTS players1 (username TEXT, id TEXT, coins INT, XLocation INT, YLocation INT)")
   }
 
   def AddPlayer(user: Player): Unit = {
