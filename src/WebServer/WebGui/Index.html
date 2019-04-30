@@ -23,7 +23,6 @@
 
     var PlayerComponents = [];
 
-    var ClientID;
     var ClientName;
 
     ConnectSocket();
@@ -32,28 +31,23 @@
         socket.on('connect', function (event) {
             socket.send('Connected to Server');
         });
-        socket.on('newPlayerConnected', function (event) {
-            var player = json.parse(event);
-            playersOnline[player['id']] = {'username': player['username'], 'coin': player['coins'],
-                'location': player['location']}
-        });
-        socket.on('UpdatePlayerMovement', function (event) {
-            //create a new method to deal with changing the location of each player
+        socket.on('message', function (event) {
+            print(event)
         });
     }
 
     function initializeGame(){
         console.log("Registering");
 
-        var username = document.forms['GameStartForm']["Username"].value;
-        ClientID = socket.emit('register', username, socket.id);
+        ClientName = document.forms['GameStartForm']["Username"].value;
+        socket.emit('register', ClientName, socket.id);
 
-        //make sure to add the client to this list on server, so everyPlayer is added
-        playersOnline = socket.emit('GetPlayers');
+        socket.emit('UpdateGame');
 
-        for (var player of playersOnline.keys()){
+        /*for (player of playersOnline.keys()){
             CreatePlayer(playersOnline[player]);
-        }
+        }*/
+        myGameArea.start()
     }
 
 

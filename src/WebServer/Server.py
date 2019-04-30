@@ -50,14 +50,17 @@ def RegisterPlayer(username, id):
     SendToScala(message)
 
 
-@socket_server.on('UpdatePlayers')
-def SendPlayers():
-    return 0 ##return the map of players with new locations from database
+@socket_server.on('UpdateGame')
+def SendGame():
+    message = {"userID": "", "action": "update", "username": ""}
+    SendToScala(message)
 
 
-@socket_server.on('PlayerMovement')
-def UpdateLocation(Id):
-    return 0 ##go into database and update the players location
+@socket_server.on('disconnect')
+def ClientDisconnected():
+    print("Server: " + request.sid + " disconnected")
+    message = {"userID": request.sid, "action": "disconnected", "username": ""}
+    SendToScala(message)
 
 
 def SendToScala(message):
@@ -69,6 +72,7 @@ def getFromScala(message):
     global currentPlyId
     currentPlyId = message
     print(currentPlyId)
+
 
 
 socket_server.run(app, port=8080)

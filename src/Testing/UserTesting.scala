@@ -11,11 +11,6 @@ class UserTesting extends FunSuite{
     game.AddUser("Water","0")
     game.AddUser("1", "1")
     game.AddUser("", "2")
-
-    //testing ids
-
-
-    //testing names
   }
 
   test("spawnLocation"){

@@ -25,6 +25,7 @@ class SocketServer extends Actor {
       this.server ! Register(self)
       Database.SetupDatabase()
 
+
     case r: Received =>
       val parsed: JsValue = Json.parse(r.data.utf8String)
 
@@ -45,8 +46,14 @@ class SocketServer extends Actor {
         game.AddUser(username, Id)
       }
       if (action == "disconnected"){
-        this.clients = this.clients - Id
+        this.clients = this.clients.filterKeys(_ != Id)
+        game.RemovePlayer(Id)
         Database.RemovePlayer(Id)
+      }
+      if (action == "update"){
+        for (client <- clients.keys){
+          clients(client) ! game.toJson
+        }
       }
   }
 
