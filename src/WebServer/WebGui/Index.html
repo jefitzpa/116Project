@@ -31,18 +31,25 @@
         socket.on('connect', function (event) {
             socket.send('Connected to Server');
         });
-        socket.on('message', function (event) {
-            print(event)
-        });
+    }
+
+    socket.on('gameState', parseGS);
+
+    function parseGS(event){
+        console.log(event)
     }
 
     function initializeGame(){
         console.log("Registering");
 
+        const start = document.getElementById("GameStartForm");
+        start.style.display = "none";
+
         ClientName = document.forms['GameStartForm']["Username"].value;
         socket.emit('register', ClientName, socket.id);
 
         socket.emit('UpdateGame');
+
 
         /*for (player of playersOnline.keys()){
             CreatePlayer(playersOnline[player]);
@@ -96,21 +103,6 @@
     }
 
     //end of new code
-
-    var Clientplayer;
-    var ClientplayerName;
-    var Clientscore;
-
-    function loadGame() {
-        var start = document.getElementById("GameStartForm");
-        start.style.display = "none";
-
-
-        Clientplayer = new component(18, 18, "red", 225, 225, "rect");
-        ClientplayerName = new component("20px", "Consolas", "black", 210, 210, "text");
-        Clientscore = new component("30px", "Consolas", "black", 340, 40, "text");
-        myGameArea.start();
-    }
 
     var myGameArea = {
         canvas : document.createElement("canvas"),
@@ -171,16 +163,8 @@
 
     function updateGameArea() {
         myGameArea.clear();
-        Clientplayer.moveAngle = 0;
-        Clientplayer.speed = 0;
-        ClientplayerName.moveAngle = 0;
-        ClientplayerName.speed = 0;
 
-        Clientscore.text="Coins: " + "0";
-        ClientplayerName.text = document.forms['GameStartForm']["Username"].value;
-        ClientplayerName.textAlign = 'center';
-
-        if (myGameArea.keys && myGameArea.keys[37]) {ClientplayerName.moveAngle = -1; }
+       /* if (myGameArea.keys && myGameArea.keys[37]) {ClientplayerName.moveAngle = -1; }
         if (myGameArea.keys && myGameArea.keys[39]) {ClientplayerName.moveAngle = 1; }
         if (myGameArea.keys && myGameArea.keys[38]) {ClientplayerName.speed= 1; }
         if (myGameArea.keys && myGameArea.keys[40]) {ClientplayerName.speed= -1; }
@@ -188,13 +172,8 @@
         if (myGameArea.keys && myGameArea.keys[37]) {Clientplayer.moveAngle = -1; }
         if (myGameArea.keys && myGameArea.keys[39]) {Clientplayer.moveAngle = 1; }
         if (myGameArea.keys && myGameArea.keys[38]) {Clientplayer.speed= 1; }
-        if (myGameArea.keys && myGameArea.keys[40]) {Clientplayer.speed= -1; }
+        if (myGameArea.keys && myGameArea.keys[40]) {Clientplayer.speed= -1; }*/
 
-        Clientplayer.newPos();
-        ClientplayerName.newPos();
-        Clientplayer.update();
-        ClientplayerName.update();
-        Clientscore.update();
 
     }
 </script>

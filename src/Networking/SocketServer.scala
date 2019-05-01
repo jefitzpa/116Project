@@ -51,9 +51,8 @@ class SocketServer extends Actor {
         Database.RemovePlayer(Id)
       }
       if (action == "update"){
-        for (client <- clients.keys){
-          clients(client) ! game.toJson
-        }
+        println(game.toJson())
+        sender() ! game.toJson() + "|/|"
       }
   }
 

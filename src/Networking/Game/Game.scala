@@ -44,22 +44,21 @@ class Game {
   def toJson(): JsValue = {
     val playerMap: Map[String, Map[String, String]] = Map()
     for (player <- players){
-      playerMap(player.userId) -> Map("username" -> player.username,
-        "coins" -> player.Coins,
-        "x" -> player.location.head, "y" -> player.location.tail.head)
+      playerMap ++ Map(player.userId -> Map("username" -> player.username,
+        "coins" -> player.Coins.toString,
+        "x" -> player.location.head.toString, "y" -> player.location.tail.head.toString))
     }
 
     val coinMap: Map[String, Map[String, String]] = Map()
     for (coin <- coins){
-      coinMap(coin.id) -> Map("x" -> coin.location.head,
-      "y" -> coin.location.tail.head)
+      coinMap ++ Map(coin.id -> Map("x" -> coin.location.head.toString,
+      "y" -> coin.location.tail.head.toString))
     }
 
     val gs: Map[String, JsValue] = Map(
       "players" -> Json.toJson(playerMap),
       "coins" -> Json.toJson(coinMap)
     )
-
     Json.toJsObject(gs)
   }
 

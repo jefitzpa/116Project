@@ -68,11 +68,8 @@ def SendToScala(message):
 
 
 def getFromScala(message):
-    message = json.loads(message)
-    global currentPlyId
-    currentPlyId = message
-    print(currentPlyId)
-
+    print("Server: Message from Socket received " + message)
+    socket_server.emit('gameState', message, broadcast=True)
 
 
 socket_server.run(app, port=8080)
