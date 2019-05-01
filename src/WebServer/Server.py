@@ -18,14 +18,13 @@ scala_socket.connect(('localhost', 8000))
 
 
 def listenForData(the_socket):
-    delimiter = "|/|"
+    delimiter = "|"
     buffer = ""
     while True:
         buffer += the_socket.recv(1024).decode()
         while delimiter in buffer:
             message = buffer[:buffer.find(delimiter)]
             buffer = buffer[buffer.find(delimiter) + 1:]
-            print(message)
             getFromScala(message)
 
 

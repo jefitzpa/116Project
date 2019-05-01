@@ -53,7 +53,7 @@ class SocketServer extends Actor {
       }
       if (action == "update"){
         val message = game.toJson()
-        this.server ! Write(ByteString(message + "|/|"))
+        this.server ! Write(ByteString(message + "|"))
       }
   }
 

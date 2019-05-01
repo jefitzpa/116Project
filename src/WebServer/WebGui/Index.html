@@ -36,7 +36,16 @@
     socket.on('gameState', parseGS);
 
     function parseGS(event){
-        console.log(event)
+        console.log(event);
+
+        const players = event['players'];
+        const coins = event['coins'];
+
+        for (var ply in players) {
+            if (players.hasOwnProperty(ply)) {
+                console.log(ply)
+            }
+        }
     }
 
     function initializeGame(){
