@@ -13,8 +13,6 @@ socket_server = SocketIO(app)
 userIDToSid = {}
 sidToUserID = {}
 
-currentPlyId = 0
-
 scala_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 scala_socket.connect(('localhost', 8000))
 
@@ -27,6 +25,7 @@ def listenForData(the_socket):
         while delimiter in buffer:
             message = buffer[:buffer.find(delimiter)]
             buffer = buffer[buffer.find(delimiter) + 1:]
+            print(message)
             getFromScala(message)
 
 
@@ -47,6 +46,9 @@ def RegisterPlayer(username, id):
     print("Server: " + str(id) + " connected")
 
     message = {"userID": id, "action": "connected", "username": username}
+    SendToScala(message)
+
+    message = {"userID": "", "action": "update", "username": ""}
     SendToScala(message)
 
 

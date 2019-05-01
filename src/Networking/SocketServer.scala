@@ -4,6 +4,7 @@ import java.net.InetSocketAddress
 
 import akka.actor.{Actor, ActorRef, ActorSystem, Props}
 import akka.io.{IO, Tcp}
+import akka.util.ByteString
 import play.api.libs.json.{JsValue, Json}
 
 class SocketServer extends Actor {
@@ -51,8 +52,8 @@ class SocketServer extends Actor {
         Database.RemovePlayer(Id)
       }
       if (action == "update"){
-        println(game.toJson())
-        sender() ! game.toJson() + "|/|"
+        val message = game.toJson()
+        this.server ! Write(ByteString(message + "|/|"))
       }
   }
 
