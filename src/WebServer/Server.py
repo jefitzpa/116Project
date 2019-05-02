@@ -47,6 +47,7 @@ def RegisterPlayer(username, id):
     message = {"userID": id, "action": "connected", "username": username}
     SendToScala(message)
 
+    print("Server: Updating games")
     message = {"userID": "", "action": "update", "username": ""}
     SendToScala(message)
 
@@ -61,6 +62,10 @@ def SendGame():
 def ClientDisconnected():
     print("Server: " + request.sid + " disconnected")
     message = {"userID": request.sid, "action": "disconnected", "username": ""}
+    SendToScala(message)
+
+    print("Server: Updating games")
+    message = {"userID": "", "action": "update", "username": ""}
     SendToScala(message)
 
 
