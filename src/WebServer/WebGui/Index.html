@@ -134,35 +134,18 @@
         }
     };
 
+    highesst = {};
+
     function updateGameArea() {
         myGameArea.clear();
 
         document.getElementById('ClientCoin').innerHTML = "Coins: " + playersOnline[socket.id]['coins'];
 
-        var highest = 0;
-        var second = 0;
-        var third = 0;
-        var fourth = 0;
-        var fith = 0;
-        for (const ply of playersOnline){
-            if (playersOnline[ply]['coins'] > highest){
-                document.getElementById('1').innerHTML = playersOnline[ply]['username'] + " : " + playersOnline[socket.id]['coins'];
-            }
-            if (playersOnline[ply]['coins'] > second){
-                document.getElementById('2').innerHTML = playersOnline[ply]['username'] + " : " + playersOnline[socket.id]['coins'];
-            }
-            if (playersOnline[ply]['coins'] > third){
-                document.getElementById('3').innerHTML = playersOnline[ply]['username'] + " : " + playersOnline[socket.id]['coins'];
-            }
-            if (playersOnline[ply]['coins'] > fourth){
-                document.getElementById('4').innerHTML = playersOnline[ply]['username'] + " : " + playersOnline[socket.id]['coins'];
-            }
-            if (playersOnline[ply]['coins'] > fith){
-                document.getElementById('5').innerHTML = playersOnline[ply]['username'] + " : " + playersOnline[socket.id]['coins'];
+        for (var ply in playersOnline) {
+            if (playersOnline[ply]['coins'] > highest) {
+
             }
         }
-
-        document.getElementById('ClientCoin').innerHTML = "Coins: " + playersOnline[socket.id]['coins'];
 
         for (const comp of PlayerComponents){
             comp.update();
