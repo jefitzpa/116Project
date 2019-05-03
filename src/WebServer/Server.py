@@ -64,8 +64,23 @@ def ClientDisconnected():
     message = {"userID": request.sid, "action": "disconnected", "username": ""}
     SendToScala(message)
 
-    print("Server: Updating games")
-    message = {"userID": "", "action": "update", "username": ""}
+
+@socket_server.on('keyStates')
+def PlayerMovement(keystates):
+    keystates = json.loads(keystates)
+
+    x = 0.0
+    if keystates["a"] and not keystates["d"]:
+        x = -1.0
+    elif not keystates["a"] and keystates["d"]:
+        x = 1.0
+    y = 0.0
+    if keystates["w"] and not keystates["s"]:
+        y = -1.0
+    elif not keystates["w"] and keystates["s"]:
+        y = 1.0
+
+    message = {"userID": request.sid, "action": "moved", "username": "", "x": x, "y": y}
     SendToScala(message)
 
 

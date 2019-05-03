@@ -7,6 +7,8 @@ import akka.io.{IO, Tcp}
 import akka.util.ByteString
 import play.api.libs.json.{JsValue, Json}
 
+case class Update()
+
 class SocketServer extends Actor {
 
   import Tcp._
@@ -25,6 +27,7 @@ class SocketServer extends Actor {
       this.server = sender()
       this.server ! Register(self)
       Database.SetupDatabase()
+      game.PopulateMap()
 
 
     case r: Received =>
@@ -49,14 +52,22 @@ class SocketServer extends Actor {
       if (action == "disconnected"){
         this.clients = this.clients.filterKeys(_ != Id)
         game.RemovePlayer(Id)
-        Database.RemovePlayer(Id)
       }
       if (action == "update"){
         val message = game.toJson()
         this.server ! Write(ByteString(message + "|"))
       }
-  }
+      if (action == "moved"){
+        val x = (parsed \ "x").as[Int] * 10
+        val y = (parsed\ "y").as[Int] * 10
 
+        game.PlayerMoved(Id, x, y)
+      }
+
+    case Update =>
+      val message = game.toJson()
+      this.server ! Write(ByteString(message + "|"))
+  }
 }
 
 object SocketServer {
@@ -64,6 +75,12 @@ object SocketServer {
   def main(args: Array[String]): Unit = {
     val actorSystem = ActorSystem()
 
+    import actorSystem.dispatcher
+
+    import scala.concurrent.duration._
+
     val server = actorSystem.actorOf(Props(classOf[SocketServer]))
+
+    actorSystem.scheduler.schedule(32.milliseconds, 32.milliseconds, server, Update)
   }
 }

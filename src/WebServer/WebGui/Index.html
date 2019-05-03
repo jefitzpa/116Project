@@ -36,25 +36,23 @@
     function parseGS(event){
         const message = JSON.parse(event);
 
+        PlayerComponents = [];
+
         console.log("Message Received: " + event);
 
         const players = message['players'];
         const coins = message['coins'];
 
-        for (const ply in players) {
-            if (players.hasOwnProperty(ply)) {
-                const username = players[ply]["username"];
-                const location = [players[ply]['x'], players[ply]['y']];
-                const PlyCoin = players[ply]['coins'];
-
-                playersOnline[ply] = {'username': username, 'location': location, 'coins': PlyCoin};
-            }
-        }
+        playersOnline = players;
 
         for (const player in playersOnline){
             CreatePlayer(playersOnline[player]);
         }
-        updateGameArea()
+
+        for (const coin in coins){
+            CreateCoin(coins[coin])
+        }
+        updateGameArea();
     }
 
     function initializeGame(){
@@ -74,10 +72,17 @@
 
     function CreatePlayer(player) {
         const name = player['username'];
-        const location = player['location'];
+        const location = [player['x'], player['y']];
 
         PlayerComponents.push(new Component(18,18, "red", parseInt(location[0]), parseInt(location[1]), "rect", ""),
             new Component("20px", "Consolas", "black", parseInt(location[0]) - 12, parseInt(location[1]) - 15, "text", name));
+    }
+
+    function CreateCoin(coin) {
+        const location = [coin['x'], coin['y']];
+
+        PlayerComponents.push(new Component(10,10, "yellow", parseInt(location[0]), parseInt(location[1]), "coin", ""));
+
     }
 
     function Component(width, height, color, x, y, type, text) {
@@ -96,7 +101,15 @@
                 ctx.fillStyle = color;
                 ctx.fillText(this.text, this.x, this.y);
                 ctx.restore();
-            } else {
+            } else if (this.type === 'coin'){
+                ctx = myGameArea.context;
+                ctx.save();
+                ctx.translate(this.x, this.y);
+                ctx.rotate(this.angle);
+                ctx.fillStyle = '#edd500';
+                ctx.fillRect(this.width / -2, this.height / -2, this.width, this.height);
+                ctx.restore();
+            }else {
                 ctx = myGameArea.context;
                 ctx.save();
                 ctx.translate(this.x, this.y);
@@ -115,14 +128,6 @@
             this.canvas.height = 500;
             this.context = this.canvas.getContext("2d");
             document.body.insertBefore(this.canvas, document.body.childNodes[0]);
-            window.addEventListener('keydown', function (e) {
-                e.preventDefault();
-                myGameArea.keys = (myGameArea.keys || []);
-                myGameArea.keys[e.keyCode] = (e.type === "keydown");
-            });
-            window.addEventListener('keyup', function (e) {
-                myGameArea.keys[e.keyCode] = (e.type === "keydown");
-            })
         },
         clear : function() {
             this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
@@ -132,12 +137,48 @@
     function updateGameArea() {
         myGameArea.clear();
 
+        document.getElementById('ClientCoin').innerHTML = "Coins: " + playersOnline[socket.id]['coins'];
+
         for (const comp of PlayerComponents){
-            console.log(comp);
             comp.update();
         }
     }
+
+    var keyStates = {
+        "w": false,
+        "a": false,
+        "s": false,
+        "d": false
+    };
+
+    function setState(key, toSet){
+        if(keyStates[key] !== toSet){
+            keyStates[key] = toSet;
+            socket.emit("keyStates", JSON.stringify(keyStates));
+        }
+    }
+
+    function handleEvent(event, toSet){
+        if(event.key === "w" || event.key === "ArrowUp"){
+            setState("w", toSet);
+        }else if(event.key === "a" || event.key === "ArrowLeft"){
+            setState("a", toSet);
+        }else if(event.key === "s" || event.key === "ArrowDown"){
+            setState("s", toSet);
+        }else if(event.key === "d" || event.key === "ArrowRight"){
+            setState("d", toSet);
+        }
+    }
+
+    document.addEventListener("keydown", function (event) {
+        handleEvent(event, true);
+    });
+
+    document.addEventListener("keyup", function (event) {
+        handleEvent(event, false);
+    });
 </script>
 <br>
+<p id="ClientCoin">Coins: 0</p>
 </body>
 </html>
