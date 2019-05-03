@@ -1,9 +1,11 @@
 package Gui
 
-import Networking.Game.Game
+import io.socket.client.{IO, Socket}
+import io.socket.emitter.Emitter
 import javafx.scene.control.Button
 import javafx.scene.input.{KeyCode, KeyEvent}
 import javafx.scene.text.Text
+import play.api.libs.json.Json
 import scalafx.animation.AnimationTimer
 import scalafx.application.JFXApp
 import scalafx.application.JFXApp.PrimaryStage
@@ -13,9 +15,37 @@ import scalafx.scene.paint.Color
 import scalafx.scene.shape.Circle
 import scalafx.scene.{Group, Scene}
 
+class HandleMessagesFromPython() extends Emitter.Listener {
+  override def call(objects: Object*): Unit = {
+    val message = Json.parse(objects.apply(0).toString)
+
+    Gui.playersOnline = (message \ "players").as[Map[String, Map[String, String]]]
+    Gui.Coins = (message \ "coins").as[Map[String, Map[String, String]]]
+
+    Gui.UpdateGame()
+  }
+}
+
 object Gui extends JFXApp {
 
-  val game =  new Game
+  var socket: Socket = IO.socket("http://localhost:8080/")
+  socket.connect()
+
+  var playersOnline: Map[String, Map[String, String]] = Map()
+  var Coins: Map[String, Map[String, String]] = Map()
+
+  def Connect(name: String): Unit = {
+    socket.emit("register", name, socket.id())
+  }
+
+  socket.on("gameState", new HandleMessagesFromPython)
+
+  def UpdateGame(): Unit = {
+    for ()
+  }
+
+
+  //end of new code
 
   var coins = 0
 
@@ -32,13 +62,6 @@ object Gui extends JFXApp {
   //Create player label
   val playerName = new Text
   playerName.setTranslateY(-20)
-
-  //needs to make request to server
-  def AddUser(name: String): Unit = {
-    player.fill = Skin
-    playerName.setText(name)
-    graphics.children.addAll(PlayerStack)
-  }
 
   //initializes player graphic
   val player: Circle = new Circle {

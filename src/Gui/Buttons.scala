@@ -7,7 +7,7 @@ class StartButton extends EventHandler[ActionEvent] {
   var plyname = "default" //+ id
   override def handle(event: ActionEvent): Unit = {
     Gui.graphics.children.removeAll(Gui.StartStack)
-    Gui.AddUser(Gui.inputName.getText)
+    Gui.Connect(Gui.inputName.getText)
   }
 }
 
