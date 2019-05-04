@@ -12,7 +12,7 @@ import scalafx.application.JFXApp.PrimaryStage
 import scalafx.scene.control.TextField
 import scalafx.scene.layout.StackPane
 import scalafx.scene.paint.Color
-import scalafx.scene.shape.Circle
+import scalafx.scene.shape.{Circle, Rectangle}
 import scalafx.scene.{Group, Scene}
 
 class HandleMessagesFromPython() extends Emitter.Listener {
@@ -34,6 +34,11 @@ object Gui extends JFXApp {
   var playersOnline: Map[String, Map[String, String]] = Map()
   var Coins: Map[String, Map[String, String]] = Map()
 
+  var graphics : Group = new Group {}
+
+  val windowWidth : Double = 500
+  val windowHeight : Double = 500
+
   def Connect(name: String): Unit = {
     socket.emit("register", name, socket.id())
   }
@@ -41,7 +46,28 @@ object Gui extends JFXApp {
   socket.on("gameState", new HandleMessagesFromPython)
 
   def UpdateGame(): Unit = {
-    for ()
+
+    Gui.graphics.children.clear()
+
+    for (player <- playersOnline.keys){
+      createPlayer(playersOnline(player))
+    }
+  }
+
+  def createPlayer(player: Map[String, String]): Unit = {
+    val name = player("username")
+    val location = List(player("x"), player("y"))
+
+    val ply: Rectangle = new Rectangle{
+      x = location.head.toDouble
+      y = location.tail.head.toDouble
+      fill = Skin
+      width = 18
+      height = 18
+    }
+    val plyName: Text = new Text(location.head.toDouble - 12, location.tail.head.toDouble - 15, name)
+
+    graphics.children.addAll(ply, plyName)
   }
 
 
@@ -49,12 +75,7 @@ object Gui extends JFXApp {
 
   var coins = 0
 
-  val windowWidth : Double = 800
-  val windowHeight : Double = 600
-
   var Skin : Color = Color.Red
-
-  var graphics : Group = new Group {}
 
   var playerXvelo = 0.0
   var playerYvelo = 0.0
