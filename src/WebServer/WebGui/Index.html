@@ -134,18 +134,25 @@
         }
     };
 
-    highesst = {};
+    var highest = [];
 
     function updateGameArea() {
         myGameArea.clear();
 
         document.getElementById('ClientCoin').innerHTML = "Coins: " + playersOnline[socket.id]['coins'];
 
-        for (var ply in playersOnline) {
-            if (playersOnline[ply]['coins'] > highest) {
+        for (var players in playersOnline){
+            highest.push(playersOnline[players]);
 
-            }
+            highest.sort(function (a, b){return a['coins'] - b['coins']})
         }
+
+        document.getElementById('1').innerHTML = highest[0]['username'] + " : " + highest[0]['coins'];
+        document.getElementById('2').innerHTML = highest[1]['username'] + " : " + highest[1]['coins'];
+        document.getElementById('3').innerHTML = highest[2]['username'] + " : " + highest[2]['coins'];
+        document.getElementById('4').innerHTML = highest[3]['username'] + " : " + highest[3]['coins'];
+        document.getElementById('5').innerHTML = highest[4]['username'] + " : " + highest[4]['coins'];
+
 
         for (const comp of PlayerComponents){
             comp.update();
